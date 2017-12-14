@@ -29,12 +29,23 @@
 # https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
 # https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
 
-set -eou pipefail
-
 NWORDS=${1:-4}
 SEPARATOR=${2:-' '}
-shuf --random-source=/dev/urandom -n "$NWORDS" <<WORDLIST | paste -sd"$SEPARATOR"
-abacus
+
+shufawk() { awk 'BEGIN {srand(); OFMT="%.17f"} {print rand(), $0}' "$@" | sort -k1,1n | cut -d ' ' -f2-; }
+
+runCorrectHorse() {
+if [ $(command -v shuf) ] ; then
+  WORDS=$(echo "$LISTOFWORDS" | shuf --random-source=/dev/urandom -n "$NWORDS")
+elif [ $(command -v perl) ] ; then 
+ WORDS=$(echo "$LISTOFWORDS" | perl -MList::Util=shuffle -e 'print shuffle(<STDIN>);' | head -n $NWORDS)
+else
+  WORDS=$(echo "$LISTOFWORDS" | shufawk | head -n $NWORDS)
+fi
+echo "$WORDS" | paste -sd "$SEPARATOR" -
+}
+
+LISTOFWORDS="abacus
 abdomen
 abdominal
 abide
@@ -7809,5 +7820,6 @@ zoning
 zookeeper
 zoologist
 zoology
-zoom
-WORDLIST
+zoom"
+
+runCorrectHorse
