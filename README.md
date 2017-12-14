@@ -31,3 +31,9 @@ scone+jugular+wool+humorless+debate
 $ correcthorse 5 '*'
 verdict*unguarded*transpose*gumming*certainty
 ```
+
+## Links
+
+https://xkcd.com/936/
+http://world.std.com/~reinhold/diceware.html
+https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
